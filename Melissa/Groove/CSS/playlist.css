@@ -1,0 +1,94 @@
+.playlist-title
+{
+    padding-bottom: .5rem;
+    padding-left: .5rem;
+}
+
+.pointer
+{
+    cursor: pointer; 
+}
+
+.list-song
+{
+    height: 2rem;
+    border: 0;
+    background: rgba(255, 255, 255, 0.747);
+}
+
+.list-song:hover
+{
+    background: rgb(235, 145, 133);
+}
+
+.list-group-item.active 
+{
+    z-index: 2;
+    color: whitesmoke;
+    background: rgb(238, 145, 133);
+    background-color: rgb(238, 156, 145);
+}
+
+
+.btn-info:hover
+{
+    background: #00bda4;
+    border: 1px solid #00bda4;
+}
+
+.btn-info
+{
+    background: rgba(238, 156, 145, 0);
+    border: 1px solid #00bda4;
+    color: #00bda4;
+}
+
+.playlist-thumbnail
+{
+    background: gray;
+    width: 8rem;
+    height: 8rem;
+    margin: 1rem;
+    
+}
+
+.playlist-title
+{
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: left;
+}
+
+.badge-playlist
+{
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+.badge-num
+{
+    font-size: .6rem;
+    vertical-align: middle;
+}
+
+.break-word
+{
+    white-space: normal !important;
+}
+
+.playlist-description
+{
+    font-size: 1.2rem;
+    text-align: left;
+}
+
+.playlist-owner
+{
+    font-size: 1rem;
+    text-align: left;
+}
+
+.relative
+{
+    position: relative;
+}

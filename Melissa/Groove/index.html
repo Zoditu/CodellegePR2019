@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--ESTILOS-->
+    <link rel="stylesheet" href="CSS/bootstrap.css">
+    <link rel="stylesheet" href="JS/jqueryUI/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/player.css">
+    <link rel="stylesheet" href="CSS/playlist.css">
+
+    <!--SCRIPTS-->
+    <script src="JS/JQuery.js"></script>
+    <script src="JS/Masonry.js"></script>
+    <script src="JS/bootstrap.js"></script>
+    <script src="JS/main.js"></script>
+    <script src="JS/EndpointRequest.js"></script>
+    <script src="JS/MusicPlayer.data.js"></script>
+    <script src="JS/Player.js"></script>
+    <script src="JS/jqueryUI/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+    <title>Groove</title>
+</head>
+<body>
+<div id="app" class="h-100 w-100">
+    <section id="load-background" v-show= "BackgroundControl.visible">
+        <article class= "loader">
+            <div class="d-flex h-100 justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <header class="fixed-top bottom-white-border">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand bg-color-gr" href="#" v-on:click="Home.visible = true">
+                    <img class="tam-logo" src="IMG/LOGO.png">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link">Groove<span class="sr-only">(current)</span></a>
+                    </li>
+                   
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+                </nav>
+                  
+    </header>
+
+    <main class="container-fluid h-100">
+        <div class="row h-100">
+            <section id="userMusic">
+                <div class="accordion" id="accordionExample">
+                    <div class="card no-border bg-transparent font-white">
+                        <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn color-letter" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="material-icons">
+                                            music_video
+                                            </i> My Songs
+                            </button>
+                        </h2>
+                        </div>
+                    
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body bg-color-ac">
+                            <template v-if=" !userData.myUploads.fetchingFromServer ">
+                                <ul class= "musicList">
+                                    <li v-for="song in userData.myUploads.data.data.data" class="media_hyperlink" v-on:click="OpenMedia(song, 'A')">
+                                        <i class="material-icons">music_note</i>
+                                        {{ song.Title }}-{{ song.Author }}
+                                    </li>
+                                </ul>
+                            </template>
+                            <template v-else>
+                                <h3 class="color-white"> 
+                                    No uploads for user...
+                                </h3>
+                            </template>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    <div class="card no-border bg-transparent font-white">
+                        <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn color-letter color-letter:hover collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="material-icons">
+                                            queue_music
+                                            </i> My Playlists
+                            </button>
+                        </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body bg-color-ac">
+                            <template v-if=" !userData.myPlaylists.fetchingFromServer ">
+                                <ul class= "musicList">
+                                    <li v-for="playlist in userData.myPlaylists.data.data.data" class="media_hyperlink" v-on:click="OpenMedia( { ids: playlist.songs, name: playlist.name, description: playlist.description, thumbnail: playlist.thumbnail, owner: playlist.creator }, 'P')">
+                                        <i class="material-icons">list</i>
+                                        {{ playlist.name }}
+                                    </li>
+                                </ul>
+                            </template>
+                            <template v-else>
+                                <h3 class="color-white"> 
+                                    No playlists for user...
+                                </h3>
+                            </template>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="card no-border bg-transparent font-white">
+                        <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn color-letter color-letter:hover collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <i class="material-icons">favorite_border</i> My favs
+                            </button>
+                        </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body overflow-hidden bg-color-ac">
+                            <template v-if=" !userData.myFavorites.fetchingFromServer ">
+                                <ul class= "musicList">
+                                    <li v-for="song in userData.myFavorites.data.data.data" class="media_hyperlink" v-on:click="OpenMedia(song, 'A')">
+                                        <i class="material-icons">favorite</i>
+                                        {{ song.Title }}-{{ song.Author }}
+                                    </li>
+                                </ul>
+                            </template>
+                            <template v-else>
+                                <h3 class="color-white"> 
+                                    No favorites for user...
+                                </h3>
+                            </template>
+                            <div class="float-right">
+                                <button type="button" class="btn btn-info btn-sm" v-on:click="userData.myFavorites.list.songs = []; FindListFor( userData.myFavorites, 0 )">Open Playlist</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+            </section>
+
+            <section id="main" class="overflow-auto h-100">
+                <div id="banner" v-show="Home.visible">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="https://musingsofabookgirl.files.wordpress.com/2019/03/wewerebeautiful_banner.jpg?w=1300" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                <img src="https://www.ilikeyouroldstuff.com/sites/g/files/g2000007366/files/styles/featurednewsimage/public/2019-05/LZ_fb_1300x500_web_homepageheader.jpg?itok=nbI7pWBn" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                <img src="http://www.pplcenter.com/assets/img/Logic_1300x500-8f6ea2a4ac.png" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="http://www.pplcenter.com/assets/img/2019_PPL_MeekMill_1300x500-fa2a820127.png" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container px-0">
+                        <article id="content">
+                            <article class= "home-component h-100" v-show="Home.visible">
+                                <div class=" overflow-auto">
+                                    <div class="px-4 py-4">
+                                        <h1 v-for= "genre in Genres.types" class="d-inline-block mr-2">
+                                            <span class="badge badge-secondary" v-bind:style="{ background: genre.color + '' }"> {{genre.name}}</span>
+                                        </h1>
+
+                                        <div class="FXmasonry"> 
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/MJ.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Michael Jackson</h5>
+                                                        <p class="card-text">El rey del Pop</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                            
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/JB.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Jonas Brothers</h5>
+                                                        <p class="card-text">El rey del Pop</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/miley.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Miley Cyrus</h5>
+                                                        <p class="card-text">El rey del Pop</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/justin.jpeg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Justin Bieber</h5>
+                                                        <p class="card-text">El rey de mi cora</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/daft.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Daft Punk</h5>
+                                                        <p class="card-text">El rey del Pop</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/hillsong.png" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Hillsong</h5>
+                                                        <p class="card-text">El rey del Pop</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/redimi2.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Redimi2</h5>
+                                                        <p class="card-text">El rey del Pop</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+                                            <div class="FXmasonryItem">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="IMGS/selena.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Redimi2</h5>
+                                                        <p class="card-text">El rey del Pop</p>
+                                                        <a href="#" class="btn btn-primary">View more</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+
+                                        </div>
+                                    </div>
+                                </div>
+                        </article>
+
+                        <article class="playlist-component" v-show= "!Playlist.isLoading && !Home.visible">
+                            <div class="h-100 text-white text-truncate relative">
+                                <img class="playlist-thumbnail float-left" width=100% height=100% v-bind:src="Playlist.thumbnail"></img>
+                                <div class="text-white mt-3 playlist-title .break-word"> {{Playlist.name}} &nbsp; <span class="badge badge-playlist badge-primary badge-dark"> PLAYLIST </span> </div> 
+                                <div class="text-white playlist-description break-word"> {{Playlist.description}} </div>
+                                <div class="text-white playlist-owner break-word"> Creator: {{Playlist.owner}} | <span class="badge badge-num badge-primary badge-dark"> Number of songs: {{Playlist.songs.length}} </span> </div>
+                            </div> 
+                            <div class="list-group mx-4" role="tablist">
+                            <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer list-song" 
+                                v-for= "song in Playlist.songs"
+                                v-on:click= "OpenMedia( song, 'A' );"
+                                data-toggle="list" role="tab" v-if="song.Title">
+                                {{ song.Title }} - {{ song.Author }}
+                                <span class="badge badge-primary badge-pill">
+                                    {{ Math.floor( song.Duration / 60 ) }} : {{song.Duration % 60 < 10 ? '0' + ( song.Duration % 60) : song.Duration % 60 }}
+                                </span>
+                            </a>
+                            </div>
+                        </article>
+                    </article>
+                </div>
+
+                <article id= "player">
+                        <div class="progressBar">
+                                <div id="music_time">
+                                  
+                                </div>
+                        </div>
+                    <div class="row h-100">
+                        <div class= "col-12 h-100 text-center align-self-center overflow-hidden row">
+                            <div class="col-player h-100 float-left text-center align-self-center col" >
+                                <div class="h-100" v-show="CurrentSong.enabled">
+                                    <img class="thumbnail" v-bind:src="CurrentSong.Thumbnail"></img>
+                                </div>
+                            </div>
+                            <div class="col-player h-100 float-left col">
+                                <div div class="h-100" v-show="CurrentSong.enabled">
+                                    <div class="text-white text-truncate mt-3 song-title"> {{CurrentSong.Title}} </div>
+                                    <div class="text-white text-truncate song-author"> {{CurrentSong.Author}} </div>
+                                    <div class="text-white text-truncate song-album"> {{CurrentSong.Album}} </div>
+                                </div>
+                            </div>
+                            <div class="col-controls h-100 float-left">
+                                <!--CONTROLES-->
+                                <div class="row h-100">
+                                    <div class= "col-12 text-center align-self-center overflow-hidden">
+                                        <!-- Controles de volumen y skip previous-->
+                                        <section class= "d-inline-block">
+                                            <span class="d-inline-block volume-control">
+                                                <i class="material-icons">volume_down</i>
+                                            </span>
+                                            <div id="volume"></div>
+                                            <span class="d-inline-block volume-control">
+                                                <i class="material-icons">volume_up</i>
+                                            </span>
+        
+                                            <span class="d-inline-block volume-control">
+                                                <i class="material-icons">shuffle</i>
+                                            </span>
+        
+                                            <span class="d-inline-block volume-control">
+                                                <i class="material-icons">skip_previous</i>
+                                            </span>
+                                        </section>
+        
+                                        <!--Controles de play pause-->
+                                        <section class= "d-inline-block">
+                                            <span class="d-inline-block volume-control">
+                                                <i class="material-icons playButton" onclick="AudioPlayer.play( this );">play_arrow</i>
+                                            </span>
+                                        </section>
+        
+                                        <!--Controles de next y replay -->
+                                        <section class= "d-inline-block">
+                                            <span class="d-inline-block volume-control">
+                                                <i class="material-icons">skip_next</i>
+                                            </span>
+        
+                                            <span class="d-inline-block volume-control">
+                                                <i class="material-icons">replay</i>
+                                            </span>
+                                        </section>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+
+            <section id="related">
+
+                <h4 class="font-white mt-4 mb-4 text-center">Recomendados para ti</h4>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 no-padding h-100">
+                        <img class="h-100" src="IMG/JB.jpg">
+                    </div>
+                    <div class="col-8 px-0 py-2 h-100 auto-scroll">
+                        <h5 class="text-nowrap font-white">Título de canción</h5>
+                        <p class="text-nowrap font-white">Nombre del Álbum</p>
+                    </div>
+                </div>
+                <div class="font-white px-3"><hr class="border-color-white"> </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 no-padding h-100">
+                        <img class="h-100" src="IMG/JB.jpg">
+                    </div>
+                    <div class="col-8 px-0 py-2 h-100 auto-scroll">
+                        <h5 class="text-nowrap font-white">Título de canción</h5>
+                        <p class="text-nowrap font-white">Nombre del Álbum</p>
+                    </div>
+                </div>
+
+                <div class="font-white px-3"><hr class="border-color-white"> </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 no-padding h-100">
+                        <img class="h-100" src="IMG/JB.jpg">
+                    </div>
+                    <div class="col-8 px-0 py-2 h-100 auto-scroll">
+                        <h5 class="text-nowrap font-white">Título de canción</h5>
+                        <p class="text-nowrap font-white">Nombre del Álbum</p>
+                    </div>
+                </div>
+
+                <div class="px-3"><hr class="border-color-white"> </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 no-padding h-100">
+                        <img class="h-100" src="IMG/JB.jpg">
+                    </div>
+                    <div class="col-8 px-0 py-2 h-100 auto-scroll">
+                        <h5 class="text-nowrap font-white">Título de canción</h5>
+                        <p class="text-nowrap font-white">Nombre del Álbum</p>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+        
+    </main>
+    
+    <footer>
+
+    </footer>
+</div> 
+</body>
+</html>
