@@ -1,0 +1,26 @@
+[
+    {
+        "title": "Somebody That I Used To Know",
+        "author": "Gotye",
+        "album": "Unknown",
+        "year": 2000,
+        "thumbnail": ".../img/thumb.png",
+        "duration": 243,
+        "colaborators": [],
+        "locations": "/reproductor/shared/audio/SomebodyThatIUsedToKnow.mp3",
+        "id":10
+    },
+    {
+        "title": "Somebody That I Used To Know",
+        "author": "Gotye",
+        "album": "Unknown",
+        "year": 2000,
+        "thumbnail": ".../img/thumb.png",
+        "duration": 243,
+        "colaborators": [],
+        "locations": "/reproductor/shared/audio/SomebodyThatIUsedToKnow.mp3",
+        "id":11
+
+    }
+
+]

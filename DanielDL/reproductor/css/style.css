@@ -1,0 +1,308 @@
+/* @font-face { */
+/* font-family: 'Material Icons'; */
+/* font-style: normal; */
+/* font-weight: 400; */
+/* src: url(https://example.com/MaterialIcons-Regular.eot); */
+/*  For IE6-8 */
+/* src: local('Material Icons'), */
+/* local('MaterialIcons-Regular'), */
+/* url(/iconFont/MaterialIcons-Reglar.woff2) format('woff2'), */
+/* url(/iconFont/MaterialIcons-Reglar.woff) format('woff'), */
+/* url(/iconFont/MaterialIcons-Reguar.ttf) format('truetype'); */
+/* } */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    zoom: 0.9;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+header {
+    height: 58px;
+    background: rgb(0, 0, 0);
+}
+
+main {
+    height: calc(100% - 6rem);
+    padding-top: 58px;
+}
+
+footer {
+    height: 6em;
+    width: 100%;
+    background: #343A40;
+    border-top: 0.1rem solid rgb(112, 112, 112);
+    border-bottom: 0.1rem solid rgb(112, 112, 112);
+    position: relative;
+
+}
+
+.auto-scroll {
+    overflow: hidden;
+}
+
+.auto-scroll:hover {
+    overflow: auto;
+}
+
+#userMusic {
+    width: 20rem;
+    height: 100%;
+    background: #343A40;
+    border-right: 0.1rem solid white;
+    overflow: auto;
+    color: white;
+}
+
+.no-border {
+    border: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+#main {
+    width: calc(100% - 40rem);
+    background: #28A745;
+    overflow: auto;
+}
+
+#related {
+    width: 20rem;
+    height: 100%;
+    padding-top: 1rem;
+    background: #343A40;
+    border-left: 0.1rem solid white;
+}
+
+#related img {
+    width: 100%;
+    height: 100%;
+}
+
+.relatedItem {
+    height: 80px;
+    margin: 1rem;
+    margin-top: 0;
+    background: #52575e;
+}
+
+.bottom-white-border {
+    border-bottom: 0.1rem solid white;
+}
+
+.no-border {
+    border: 0;
+}
+
+.border-color-white {
+    border-color: white;
+}
+
+.color-white {
+    color: white;
+}
+
+.color-green {
+    /* color: #28A745; */
+    color: whitesmoke;
+
+}
+
+.color-green:hover {
+    color: rgb(38, 241, 86);
+}
+
+.color-green:focus {
+    box-shadow: unset;
+}
+
+.musicList {
+    list-style-type: none;
+    padding-right: 1rem;
+    overflow: hidden;
+}
+
+.musicList li {
+    white-space: nowrap;
+}
+
+.bg-light-gray {
+    background: rgb(58, 64, 68);
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+
+
+    vertical-align: middle !important;
+    padding-bottom: 3px;
+    margin-right: 0.2em;
+}
+
+#load-background {
+    /* display: none; */
+    position: absolute;
+    z-index: 99999;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.loader {
+    position: absolute;
+    top: calc(50vh - 6rem);
+    height: 6rem;
+    width: 100vw;
+    display: block;
+    background: rgba(255, 255, 255, 0.75)
+}
+
+
+.loader *:first-child {
+    margin: auto;
+    height: 6rem;
+    width: 6rem;
+}
+
+.media_hyperlink {
+    cursor: pointer;
+    color: whitesmoke;
+    transition: color 0.3s;
+}
+
+
+.media_hyperlink:hover {
+    color: #28A745;
+    transition: color 0.3s;
+}
+
+
+a img {
+    width: 25px;
+}
+
+.relative {
+    position: relative;
+}
+
+/*Cambio*/
+#banner {
+    height: 18vw;
+}
+
+/*Cambio*/
+#banner div,
+#banner img {
+    height: 100%;
+    width: 100%;
+}
+
+
+/* clearfix */
+/* .grid:after {
+    content: '';
+    display: block;
+    clear: both;
+} */
+
+
+/* ---- grid-item ---- */
+
+/* .grid-sizer,
+.grid-item {
+    width: 33.33%;
+}
+
+.grid-item {
+    height: 120px;
+    float: left;
+    background: #D26;
+    border: 2px solid #333;
+    border-color: hsla(0, 0%, 0%, 0.5);
+    border-radius: 5px;
+}
+
+.grid-w-2 { width: 40%; }
+.grid-w-3 { width: 60%; }
+.grid-w-100 { width: 100%; }
+
+
+.grid-h-2 { height: 20rem; }
+.grid-h-3 { height: 26rem; }
+.grid-h-4 { height: 36rem; } */
+
+
+.FXmasonryItem
+{
+    float: left;
+    width: 100%;
+    margin: 0;
+    -webkit-column-break-inside: avoid; /* Chrome, Safari */
+    page-break-inside: avoid; /* Therically FF 20+ */
+    break-inside: avoid-column; /* IE 11 */
+    display: table;
+
+    border: 1px solid darksalmon;
+    background: pink;
+    margin-bottom: 1rem;
+}
+
+.FXmasonry
+{
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+
+    -webkit-column-gap: 1rem; /*Chrome, Safari, Opera*/
+    -moz-column-gap:1rem; /*Firefox*/
+    column-gap: 1rem; 
+}
+
+@media only screen and ( max-width: 1280px )
+{
+    .FXmasonry
+    {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media only screen and ( min-width: 1280px )
+{
+    .container
+    {
+        max-width: 1440px;
+    }
+}

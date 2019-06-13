@@ -1,0 +1,46 @@
+[
+    {
+        "title": "One Dance",
+        "author": "Drake",
+        "album": "Unkown",
+        "year": 2016,
+        "thumbnail": ".../img/thumb.png",
+        "duration": 174,
+        "colaborators": [],
+        "locations": "http://campitos.ml/audio/Drake%20-%20One%20Dance.mp3"
+    },
+
+    {
+        "title": "Amárrame",
+        "author": "Mon Laferte",
+        "album": "Unkown",
+        "year": 2016,
+        "thumbnail": ".../img/thumb.png",
+        "duration": 207,
+        "colaborators": [],
+        "locations": "http://campitos.ml/audio/Mon%20Laferte%20-%20Am%c3%a1rrame.mp3"
+    },
+
+    {
+        "title": "Flaco",
+        "author": "Mon Laferte",
+        "album": "Unkown",
+        "year": 2016,
+        "thumbnail": ".../img/thumb.png",
+        "duration": 256,
+        "colaborators": [],
+        "locations": "http://campitos.ml/audio/Mon%20Laferte%20-%20Flaco.mp3"
+    },
+
+    {
+        "title": "Secrets",
+        "author": "OneRepublic",
+        "album": "Unkown",
+        "year": 2001,
+        "thumbnail": ".../img/thumb.png",
+        "duration": 224,
+        "colaborators": [],
+        "locations": "http://campitos.ml/audio/OneRepublic%20-%20Secrets.mp3"
+    }
+
+]

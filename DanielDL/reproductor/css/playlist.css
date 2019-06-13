@@ -1,0 +1,56 @@
+.playlist-title
+{
+    border-bottom: 0.1rem solid whitesmoke;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.playlist-thumbnail
+{
+    background: transparent;
+    height: 7rem;
+    width: 7rem;
+    margin: 0.5rem;
+    margin-left: 1.5rem;
+}
+
+.playlist-name
+{
+    font-size: 1.5rem;
+}
+
+.playlist-description
+{
+    font-size: 1rem;
+}
+
+.playlist-owner
+{
+    font-size: 1rem;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 9rem;
+}
+
+
+.break-world
+{
+    white-space: normal;
+}
+
+.pointer
+{
+    cursor: pointer;
+}
+
+.list-song
+{
+    height: 2rem;
+    /* color: whitesmoke; */
+}
+
+.list-song:hover
+{
+background: lightgray;
+}
+

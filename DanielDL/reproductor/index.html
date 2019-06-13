@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Icono de pestaña - Favicon -->
+  <link rel="icon" type="image/png" href="img/player.ico">
+
+  <!-- Estilos importados -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="js/jQueryUI/jquery-ui.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/player.css">
+  <link rel="stylesheet" href="style/iconFont/material-icons.css">
+  <link rel="stylesheet" href="css/playlist.css">
+
+
+  <!-- Scripts importados -->
+  <script src="js/jquery3.3.1.js"></script>
+  <script src="js/jqueryUI/jquery-ui.js"></script>
+  <script src="js/masonry.js"></script>
+  <script src="js/Bootstrap.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/EndpointRequest.js"></script>
+  <script src="js/MusicPlayer.data.js"></script>
+  <script src="js/Player.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+  <title>Reproductor</title>
+
+</head>
+
+<body>
+  <!-- Abre: Div contenedor de Header, Main y Footer -->
+  <div id="app" class="h-100 w-100">
+
+    <!-- Pantalla de carga -->
+    <section id="load-background" v-show="BackGroundControl.visible">
+      <article class="loader">
+        <div class="text-center d-flex h-100 justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <header class="fixed-top bottom-white-border">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <!--Cambios 2-->
+        <a class="navbar-brand" href="#" v-on:click="Home.visible = true;">Logo
+          <img src="img/player.ico" alt="">
+        </a>
+        <!--Cambios 2-->
+
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link">Reproductor.Titulo <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <main class="container-fluid">
+      <div class="row h-100">
+
+        <!-- ACCORDION A LA DERECHA -->
+        <section id="userMusic">
+          <div class="accordion" id="accordionExample">
+
+            <!-- MY UPLOADS -->
+            <div class="card no-border bg-transparent">
+              <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                  <button class="btn color-green collapsed" type="button" data-toggle="collapse"
+                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="material-icons">queue_music</i>My Songs
+                  </button>
+                </h2>
+              </div>
+              <!-- collapseOne -->
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body bg-light-gray">
+                  <!-- TEMPLATE 1 -->
+                  <template v-if="!userData.myUploads.fetchingFromServer">
+                    <ul class="musicList">
+                      <li v-for="song in userData.myUploads.data.data.data" class="media_hyperlink"
+                        v-on:click="OpenMedia(song, 'A')">
+                        <i class="material-icons"> music_note </i>
+                        {{ song.title }} - {{song.author}}
+                      </li>
+                    </ul>
+                  </template>
+                  <!-- TEMPLATE 2 -->
+                  <template v-else>
+                    <h3 class="color-white">
+                      ---No uploads---
+                    </h3>
+                  </template>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- MY PLAYLISTS -->
+            <div class="card bg-transparent">
+              <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                  <button class="btn color-green" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="false" aria-controls="collapseTwo">
+                    <i class="material-icons"> playlist_play</i>My Playlist
+                  </button>
+                </h2>
+              </div>
+              <!-- collapseTwo -->
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body bg-light-gray">
+                  <!-- TEMPLATE 1 -->
+                  <template v-if="!userData.myPlaylists.fetchingFromServer">
+                    <ul class="musicList">
+                      <li v-for="playlist in userData.myPlaylists.data.data.data" class="media_hyperlink"
+                        v-on:click="OpenMedia( { ids: playlist.songs, name: playlist.name, description: playlist.description, thumbnail: playlist.thumbnail, owner: playlist.creator}, 'P')">
+                        <i class="material-icons">list</i>
+                        {{ playlist.name }}
+                      </li>
+                    </ul>
+                  </template>
+                  <!-- TEMPLATE 2 -->
+                  <template v-else>
+                    <h3 class="color-white">
+                      ---No playlists---
+                    </h3>
+                  </template>
+                </div>
+              </div>
+            </div>
+
+            <!-- MY FAVORITES -->
+            <div class="card bg-transparent">
+              <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                  <button class="btn color-green collapsed" type="button" data-toggle="collapse"
+                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <i class="material-icons">favorite</i>Favorites
+                  </button>
+                </h2>
+              </div>
+              <!-- collapseThree -->
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body bg-light-gray overflow-hidden">
+                  <!-- TEMPLATE 1 -->
+                  <template v-if="!userData.myFavorites.fetchingFromServer">
+                    <ul class="musicList">
+                      <li v-for="song in userData.myFavorites.data.data.data" class="media_hyperlink"
+                        v-on:click="OpenMedia(song, 'A')">
+                        <i class="material-icons"> favorite_border </i>
+                        {{ song.title }} - {{song.author}}
+                      </li>
+                    </ul>
+                  </template>
+                  <!-- TEMPLATE 2 -->
+                  <template v-else>
+                    <h3 class="color-white">
+                      ---No favorites---
+                    </h3>
+                  </template>
+                  <div class="float-right">
+                    <button v-on:click="userData.myFavorites.list.songs = []; FindListFor( userData.myFavorites, 0);"
+                      type="button" class="btn btn-success">Open playlist</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANTALLA PRINCIPAL (CENTRO) -->
+        <section id="main" class="overflow-auto h-100">
+
+          <div id="banner">
+            <div class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img class="d-block w-100" src="img/ad1.jpg" alt="First slide">
+                </div>
+                <div class="carousel-item">
+                  <img class="d-block w-100" src="img/ad2.jpg" alt="Second slide">
+                </div>
+                <div class="carousel-item">
+                  <img class="d-block w-100" src="img/ad3.jpg" alt="Third slide">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="container px-4">
+            <article class="home-component h-100" v-show="Home.visible">
+              <div class="h-100 overflow-auto">
+
+                <div class="py-4">
+                  <h1 v-for="genre in Genres.types" class="d-inline-block mr-2">
+                    <span class="badge badge-secondary" v-bind:style="{ background: genre.color + '' } ">
+                      {{genre.name}}
+                    </span>
+                  </h1>
+                </div>
+
+                <div class="FXmasonry">
+
+                  <div class="FXmasonryItem">
+                    <div class="card">
+                      <img class="card-img-top" src="img/singers/bsb.jpg" alt="Card image cap">
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Backstreet Boys</h5>
+                        <p class="card-text text-justify">The Backstreet Boys is an American vocal group, formed in Orlando, Florida in 1993.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="FXmasonryItem">
+                      <div class="card">
+                        <img class="card-img-top" src="img/singers/drakebell.jpg" alt="Card image cap">
+                        <div class="card-body text-center">
+                          <h5 class="card-title">Drake Bell</h5>
+                          <p class="card-text text-justify">Jared Drake Bell, born June 27, 1986 is an American actor, voice actor, singer, songwriter, and musician. Born in Newport Beach, California, he began his career as an actor in the early 1990s at the age of five</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="FXmasonryItem">
+                      <div class="card">
+                        <img class="card-img-top" src="img/singers/dguetta.jpg" alt="Card image cap">
+                        <div class="card-body text-center">
+                          <h5 class="card-title">David Guetta</h5>
+                          <p class="card-text text-justify">David Guetta is a French DJ, record producer and songwriter. He has sold over nine million albums and thirty million singles worldwide.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="FXmasonryItem">
+                      <div class="card">
+                        <img class="card-img-top" src="img/singers/the-chainsmokers.jpg" alt="Card image cap">
+                        <div class="card-body text-center">
+                          <h5 class="card-title">The Chainsmokers </h5>
+                          <p class="card-text text-justify">The Chainsmokers are a pop act consisting of two DJs named Drew Taggart (born December 31, 1989) and Alex Pall (born May 16, 1985).</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="FXmasonryItem">
+                      <div class="card">
+                        <img class="card-img-top" src="img/singers/eminen.jpg" alt="Card image cap">
+                        <div class="card-body text-center">
+                          <h5 class="card-title">Eminem</h5>
+                          <p class="card-text text-justify">American rapper, record producer and actor Eminem was born Marshall Bruce Mathers III on October 17, 1972, in St. Joseph, Missouri.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="FXmasonryItem">
+                      <div class="card">
+                        <img class="card-img-top" src="img/singers/ifd.jpg" alt="Card image cap">
+                        <div class="card-body text-center">
+                          <h5 class="card-title">I Fight Dragons</h5>
+                          <p class="card-text text-justify">I Fight Dragons is a rock band from Chicago.Their music is a combination of pop/rock with chiptune, featuring electronic sounds made using Nintendo Game Boys and Nintendo Entertainment Systems.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                  </div>
+                    
+
+                </div>
+
+                
+
+
+
+<!-- 
+                <div class="grid pb-4">
+                  <div class="grid-sizer"></div>
+                  <div class="grid-item grid-h-1"> 
+                    <p> lorem1 </p>
+                  </div>
+                  <div class="grid-item grid-h-2"></div>
+                  <div class="grid-item grid-h-3"></div>
+                  <div class="grid-item grid-h-1"></div>
+                  <div class="grid-item grid-h-2"></div>
+                  <div class="grid-item grid-h-3"></div>
+                  <div class="grid-item grid-h-1"></div>
+                </div> -->
+
+                <!-- <div class="grid-item grid-item--width2 grid-item--height2"></div>
+                <div class="grid-item grid-item--height3"></div>
+                <div class="grid-item grid-item--height2"></div>
+                <div class="grid-item grid-item--width3"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item grid-item--height2"></div>
+                <div class="grid-item grid-item--width2 grid-item--height3"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item grid-item--height2"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item grid-item--width2 grid-item--height2"></div>
+                <div class="grid-item grid-item--width2"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item grid-item--height2"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item grid-item--height3"></div>
+                <div class="grid-item grid-item--height2"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item grid-item--height2"></div> -->
+
+
+
+              </div>
+            </article>
+
+            <article class="playlist-component" v-show="!PlayList.isLoading && !Home.visible">
+              <article class="playlist-component" v-show="!PlayList.isLoading">
+                <div class="text-white text-truncate relative h-100">
+                  <img class="playlist-thumbnail float-left" width="100%" height="100%"
+                    v-bind:src="PlayList.thumbnail" />
+                  <div class="playlist-name break-world">
+                    {{PlayList.name}}
+                    <span class="badge badge-primary badge-dark">
+                      PLAYLIST
+                    </span>
+                  </div>
+                  <div class="playlist-description break-world">{{PlayList.description}}</div>
+                  <div class="playlist-owner break-world">Creator: {{PlayList.owner}} |
+                    <span class="badge badge-primary badge-dark">
+                      Number of songs: {{PlayList.songs.length}}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Aqui se mostraba el nombre de la playlist dubrayado -->
+                <!-- <h4 class="text-white playlist-title text-truncate my-4 mx-4">{{PlayList.name}}</h4> -->
+
+                <div class="list-group mx-4" role="tablist">
+                  <!--Reproducir desde main-->
+                  <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer list-song"
+                    v-for="songs in PlayList.songs" v-on:click="OpenMedia( songs, 'A');" data-toggle="list" role="tab">
+                    {{ songs.title }} - {{songs.author}} ||| id en BD: {{songs.id}}
+                    <span class="badge badge-primary badge-success">
+                      {{ Math.floor( songs.duration/60 ) }}
+                      :
+                      {{ songs.duration % 60 < 10 ? '0' + ( songs.duration % 60 ) : songs.duration % 60 }}
+                    </span>
+                  </a>
+                </div>
+              </article>
+            </article>
+
+          </div>
+
+
+        </section>
+
+        <section id="related" class="auto-scroll">
+          <h4 class="color-white mb-3 text-center">Recommended:</h4>
+          <div class="row relatedItem ">
+            <div class="col-4 px-0 h-100">
+              <img src="img/thumb.png">
+            </div>
+            <div class="col-8 px-0 h-100 auto-scroll">
+              <h5 class="color-white px-2 "> Song Name (1) </h5>
+              <h6 class="color-white px-2 "> Singer (1) </h6>
+            </div>
+
+          </div>
+
+          <div class="px-3">
+            <hr class="border-color-white">
+          </div>
+
+          <div class="row relatedItem ">
+            <div class="col-4 px-0 h-100">
+              <img src="img/thumb.png">
+            </div>
+
+            <div class="col-8 px-0 h-100 auto-scroll">
+              <h5 class="color-white px-2 "> Song Name (2) </h5>
+              <h6 class="color-white px-2 "> Singer (2) </h6>
+            </div>
+          </div>
+
+          <div class="px-3">
+            <hr class="border-color-white">
+          </div>
+
+          <div class="row relatedItem ">
+            <div class="col-4 px-0 h-100">
+              <img src="img/thumb.png">
+            </div>
+
+            <div class="col-8 px-0 h-100 auto-scroll">
+              <h5 class="color-white px-2 "> Song Name (3) </h5>
+              <h6 class="color-white px-2 "> Singer (3) </h6>
+            </div>
+          </div>
+
+          <div class="px-3">
+            <hr class="border-color-white">
+          </div>
+
+          <div class="row relatedItem ">
+            <div class="col-4 px-0 h-100">
+              <img src="img/thumb.png">
+            </div>
+
+            <div class="col-8 px-0 h-100 auto-scroll">
+              <h5 class="color-white px-2 "> Song Name (4) </h5>
+              <h6 class="color-white px-2 "> Singer (4) </h6>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+          <div class="progressBar">
+            <div id="music_time"></div>
+          </div>
+
+          <div class="d-flex w-100 h-100">
+            <div class="w-100 h-100 text-center align-self-center row overflow-hidden">
+              <div class="col-player h-100 col text-left float-left">
+                <div class="text-white text-truncate h-100" v-show="CurrentSong.enabled">
+                  <img class="pp float-left" v-bind:src="CurrentSong.thumbnail" />
+                  <div class="text-truncate song-title">{{CurrentSong.title}}</div>
+                  <div class="text-truncate song-author">{{CurrentSong.author}}</div>
+                  <div class="text-truncate song-album">{{CurrentSong.album}}</div>
+                </div>
+              </div>
+
+              <div class="col-controls h-100 float-left">
+                <div class="d-flex w-100 h-100">
+                  <div class="w-100 text-center align-self-center overflow-hidden">
+
+                    <!-- Controles de volumen -->
+                    <section class="d-inline-block">
+
+                      <span class="d-inline-block volume-control">
+                        <i class="material-icons">volume_down</i>
+                      </span>
+
+                      <div id="volume"></div>
+
+                      <span class="d-inline-block volume-control">
+                        <i class="material-icons">volume_up</i>
+                      </span>
+
+                    </section>
+
+                    <!-- Controles de shuffle & previous -->
+                    <section class="d-inline-block">
+
+                      <span class="d-inline-block volume-control">
+                        <i class="material-icons">shuffle</i>
+                      </span>
+
+                      <span class="d-inline-block volume-control">
+                        <i class="material-icons">skip_previous</i>
+                      </span>
+
+                    </section>
+
+                    <!-- Controles de play/pause -->
+                    <section class="d-inline-block">
+
+                      <span class="d-inline-block volume-control">
+                        <i class="material-icons playButton" onclick="AudioPlayer.play( this );">play_arrow</i>
+                      </span>
+
+                    </section>
+
+                    <!-- Controles de next & replay -->
+                    <section class="d-inline-block">
+
+                      <span class="d-inline-block volume-control">
+                        <i class="material-icons">skip_next</i>
+                      </span>
+
+                      <span class="d-inline-block volume-control">
+                        <i class="material-icons">replay</i>
+                      </span>
+
+                    </section>
+                  </div>
+                </div>
+              </div>
+              <div class="col-player h-100 float-left">
+                3
+              </div>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+    </main>
+  </div> <!-- Cierra: Div contenedor de Header, Main y Footer -->
+</body>
+
+</html>

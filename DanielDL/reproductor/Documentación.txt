@@ -1,0 +1,49 @@
+Music API (endpoint)
+
+/users 
+    -> Params: 
+        user
+    -> GET:
+        * Headers: 
+            - x-owner
+
+/music/songs
+    -> Params: 
+        search
+    -> GET:
+        * Headers: 
+            - initialid
+            - max
+            
+/music/favorites
+    -> Params: 
+        no parámetros
+    -> GET:
+        * Headers: 
+            - initialid
+            - max
+            - x-owner
+
+/music/playlists
+    -> Params: 
+        search
+        null
+    -> GET:
+        * Headers: 
+            - initialid
+            - max
+            - x-owner
+                Si no:
+                    search = null
+
+/music/uploads
+    -> Params: 
+        no parámetros
+    -> GET:
+        * Headers: 
+            - initialid
+            - max
+            - x-owner
+
+
+
