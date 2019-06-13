@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Estilos importados -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="js/jQueryUI/jquery-ui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/playlist.css">
+    <!--Scripts importados-->
+    <script src="js/jquery.js"></script>
+    <script src="js/jQueryUI/jquery-ui.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/EndpointRequest.js"></script>
+    <script src="js/MusicPlayer.data.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/Vue.js"></script>
+
+
+    <title>Reproductor</title>
+</head>
+
+<body>
+    <div id="app" class="h-100 w-100">
+
+    <section id="load-background" v-show="BackgroundControl.visible"> <!----> 
+        <article class="loader">
+            <div class="d-flex h-100 justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <header class="fixed-top bottom-white-border">
+
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#" v-on:click="Home.visible = true" ><img class="logo" src="shared/img/Cat-icon.png" ></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#"> CATIFY <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2 " type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+    </header>
+
+    <main class="container-fluid">
+        <div class="row h-100">
+
+            <section id="userMusic">
+                <div class="accordion" id="accordionExample">
+                    <div class="card no-border bg-transparent">
+                        <div class="card-header bg-dark" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn color-green" type="button" data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="material-icons">queue_music</i>My songs
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                            data-parent="#accordionExample">
+                            <div class="card-body bg-light-gray">
+                                <template v-if = "!userData.myUploads.fetchingFromServer">
+                                    <ul class="musicList">
+                                    <li v-for="song in userData.myUploads.data.data.data"
+                                    class="media_hyperlink" v-on:click="OpenMedia(song,'A')">
+                                        <i class="material-icons">music_note</i>
+                                        {{song.title}} - {{song.autor}}
+                                    </li>
+                                    </ul>
+                                </template>
+                                <template v-else>
+                                    <h3 class="white-color">No songs for user</h3>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card no-border bg-transparent">
+                        <div class="card-header bg-dark" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn color-green collapsed" type="button" data-toggle="collapse"
+                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="material-icons">playlist_play</i>My playlists
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                            data-parent="#accordionExample">
+                            <div class="card-body bg-light-gray ">
+                                    <template v-if = "!userData.myPlaylists.fetchingFromServer">
+                                            <ul class="musicList">
+                                            <li v-for="playlists in userData.myPlaylists.data.data.data"
+                                            class="media_hyperlink" v-on:click="OpenMedia( {ids: playlists.songs, name: playlists.name, description:playlists.description, thumbnail:playlists.thumbnail, owner:playlists.creator},'P')">
+                                                <i class="material-icons">music_note</i>
+                                                {{playlists.name}} 
+                                            </li>
+                                            </ul>
+                                        </template>
+                                        <template v-else>
+                                            <h3 class="white-color">No playlists for user</h3>
+                                        </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card no-border bg-transparent">
+                        <div class="card-header bg-dark" id="headingThree">
+                            <h2 class="mb-0">
+                                <button class="btn color-green collapsed" type="button" data-toggle="collapse"
+                                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="material-icons">
+                                        favorite_border
+                                    </i>Favorite tracks
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                            data-parent="#accordionExample">
+                            <div class="card-body bg-light-gray overflow-hidden ">
+                                    <template v-if = "!userData.myFavorites.fetchingFromServer">
+                                            <ul class="musicList">
+                                            <li v-for="song in userData.myFavorites.data.data.data"
+                                            class="media_hyperlink" v-on:click="OpenMedia(song,'A')">
+                                                <i class="material-icons">favorite_border</i>
+                                                {{song.title}} - {{song.autor}}
+                                            </li>
+                                            </ul>
+                                        </template>
+                                        <template v-else>
+                                            <h3 class="white-color">No favorites for user</h3>
+                                        </template>
+                                        <div class="float-right">
+                                            <button v-on:click="userData.myFavorites.list.songs=[]; FindListFor( userData.myFavorites,0 );" type="button" class="btn btn-outline-success">Open Favorites</button>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="main" class="overflow-auto h-100">
+                    <div id="banner" v-show="Home.visible">
+                            <div class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner ">
+                                      <div class="carousel-item active">
+                                          <img src="shared/img/banner.png" class="d-block w-100" alt="...">
+                                      </div>
+                                      <div class="carousel-item">
+                                        <img src="shared/img/banner2.jpg" class="d-block w-100" alt="...">
+                                      </div>
+                                      <div class="carousel-item">
+                                        <img src="shared/img/banner3.jpg" class="d-block w-100" alt="...">
+                                      </div>
+                                    </div>
+                                  </div>
+                    </div>
+                <div class="container px-0">
+                <article class="home-component  h-100" v-show="Home.visible">
+                    <div class="h-100 overflow-auto">
+                        
+                        <div class="py-4">
+                                <h1 v-for="genre in Genres.types" class="d-inline-block mr-2">
+                                        <span class="badge badge-secondary" v-bind:style="{background: genre.color + ''}">{{genre.name}}</span>
+                                    </h1>
+                        </div>
+                        
+                        <div class="FXmasonry">
+                            <div class="FXmasonryItem">
+                                    <div class="card">
+                                            <img src="shared/img/duncan.jpg" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                              <h5 class="card-title">Duncan Dhu</h5>
+                                              <p class="card-text">Duncan Dhu es un grupo musical español de rock originario de San Sebastián (Guipúzcoa, España) formado el 4 de agosto de 1984 tras la fusión de los principales integrantes de los grupos Aristogatos y Los Dalton. Sus miembros originales fueron Mikel Erentxun (cantante hasta entonces del grupo Aristogatos), Diego Vasallo (vocalista y bajista del grupo Los Dalton) y Juan Ramón Viles (guitarra y batería de Los Dalton). Desde 1989 está compuesto por los dos primeros.</p>
+                                              <a href="#" class="btn btn-success float-right">View more</a>
+                                            </div>
+                                          </div>
+                            </div>
+                            
+                            <div class="FXmasonryItem">
+                                    
+                            </div>
+
+                            <div class="FXmasonryItem">
+                                    <div class="card">
+                                            <img src="shared/img/kalimba.jpg" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                              <h5 class="card-title">Kalimba</h5>
+                                              <p class="card-text">Kalimba Kadjaly Marichal Ibar (Ciudad de México; 26 de julio de 1982), más conocido como Kalimba, es un actor, artista de doblaje y cantante mexicano, hermano de M'balia Marichal.</p>
+                                              <a href="#" class="btn btn-success float-right">View more</a>
+                                            </div>
+                                          </div>
+                            </div>
+                            <div class="FXmasonryItem">
+                                    <div class="card">
+                                            <img src="shared/img/git.jpg" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                              <h5 class="card-title">GIT</h5>
+                                              <p class="card-text">GIT o también G.I.T. es un grupo de rock y new wave originario de Buenos Aires, Argentina, surgido a principios de la década de 1980, integrado por Pablo Guyot (guitarras y coros), Willy Iturri (batería y voz) y Alfredo Toth (voz y bajo).</p>
+                                              <a href="#" class="btn btn-success float-right">View more</a>
+                                            </div>
+                                          </div>
+                            </div>
+                            <div class="FXmasonryItem">
+                                    <div class="card">
+                                            <img src="shared/img/john.jpg" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                              <h5 class="card-title">John Cougar</h5>
+                                              <p class="card-text">John Mellencamp, anteriormente conocido como Johnny Cougar, John Cougar y John Cougar Mellencamp (Seymour, Indiana; 7 de octubre de 1951), es un cantante, compositor y guitarrista de rock estadounidense.</p>
+                                              <a href="#" class="btn btn-success float-right">View more</a>
+                                            </div>
+                                          </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </article>
+
+                <article class="playlist-component"  v-show="!PlayList.isLoading && !Home.visible">
+                        <div class="text-white text-truncate relative h-100">
+                                <img  class="playlist-thumbnail float-left " width="100$" height="100%" v-bind:src="PlayList.thumbnail"/>
+                                <div class="song-title break-word playlist-name" >
+                                    {{PlayList.name}}
+                                    <span class="badge badge-primary badge-dark"  >
+                                        PLAYLIST
+                                        </span>
+                                     </div>
+                            <div class="song-author break-word playlist-description">{{PlayList.description}}</div>
+                
+                            <div class="song-album break-word playlist-owner">Creator: {{PlayList.owner}} | 
+                                <span class="badge badge-primary badge-dark"  >
+                                Number of songs: {{PlayList.songs.length}}
+                             </span> 
+                             </div>
+                        </div>
+                    <div class="list-group my-4 mx-4" role="tablist" >
+                      <a class="list-group-item d-flex justify-content-between align-items-center  list-group-item-action-pointer list-song text-black " 
+                            v-for="song in PlayList.songs" 
+                            v-on:click="OpenMedia(song,'A'); "
+                            data-toggle="list"  role="tab" v-if="song.title" >
+                            {{song.title}} - {{song.autor}} 
+                            <span class="badge badge-primary badge-success"  ><!--formatear la duracion de la cancion-->
+                                {{Math.floor(song.duration / 60)}}
+                                :
+                                {{song.duration % 60 < 10 ? '0' + (song.duration % 60): song.duration % 60}}</span></a>
+                          </div>
+                </article>
+            </div>
+            </section>
+
+
+            <section id="related" class="auto-scroll">
+
+                <h4 class="color-green mb-4 text-center">Recomendations:</h4>
+
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 px-0 h-100 w-100">
+                        <img src="shared/img/Cat-icon.png" class="w-100 h-100" />
+
+                    </div>
+
+                    <div class="col-8 px-0 h-100">
+                        <h5 class="text-nowrap color-green px-2 overflow-hidden">Titulo de la canción</h5>
+                        <h6 class="text-nowrap color-green px-2 overflow-hidden">Álbum </h6>
+                    </div>
+                </div>
+                <div class="color-green px-3">
+                    <hr class="border-color-white">
+                </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 px-0 h-100 w-100">
+                        <img src="shared/img/Cat-icon.png" class="w-100 h-100" />
+
+                    </div>
+                    <div class="col-8 px-0 h-100">
+                        <h5 class="text-nowrap color-green px-2 overflow-hidden">Titulo de la canción</h5>
+                        <h6 class="text-nowrap color-green px-2 overflow-hidden">Álbum </h6>
+                    </div>
+                </div>
+                <div class="color-green px-3">
+                    <hr class="border-color-white">
+                </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 px-0 h-100 w-100">
+                        <img src="shared/img/Cat-icon.png" class="w-100 h-100" />
+
+                    </div>
+                    <div class="col-8 px-0 h-100">
+                        <h5 class="text-nowrap color-green px-2 overflow-hidden">Titulo de la canción</h5>
+                        <h6 class="text-nowrap color-green px-2 overflow-hidden">Álbum </h6>
+                    </div>
+                </div>
+                <div class="color-green px-3">
+                    <hr class="border-color-white">
+                </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 px-0 h-100 w-100">
+                        <img src="shared/img/Cat-icon.png" class="w-100 h-100" />
+
+                    </div>
+                    <div class="col-8 px-0 h-100">
+                        <h5 class="text-nowrap color-green px-2 overflow-hidden">Titulo de la canción</h5>
+                        <h6 class="text-nowrap color-green px-2 overflow-hidden">Álbum </h6>
+                    </div>
+                </div>
+                <div class="color-green px-3">
+                    <hr class="border-color-white">
+                </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 px-0 h-100 w-100">
+                        <img src="shared/img/Cat-icon.png" class="w-100 h-100" />
+
+                    </div>
+                    <div class="col-8 px-0 h-100">
+                        <h5 class="text-nowrap color-green px-2 overflow-hidden">Titulo de la canción</h5>
+                        <h6 class="text-nowrap color-green px-2 overflow-hidden">Álbum </h6>
+                    </div>
+                </div>
+                <div class="color-green px-3">
+                    <hr class="border-color-white">
+                </div>
+
+                <div class="row relatedItem overflow-hidden">
+                    <div class="col-4 px-0 h-100 w-100">
+                        <img src="shared/img/Cat-icon.png" class="w-100 h-100" />
+
+                    </div>
+                    <div class="col-8 px-0 h-100">
+                        <h5 class="text-nowrap color-green px-2 overflow-hidden">Titulo de la canción</h5>
+                        <h6 class="text-nowrap color-green px-2 overflow-hidden">Álbum </h6>
+                    </div>
+                </div>
+                <div class="color-green px-3">
+                    <hr class="border-color-white">
+                </div>
+
+
+            </section>
+        </div>
+
+    </main>
+
+    <footer>
+
+        <div class="progressBar">
+                <div id="music_time"></div>
+        </div>
+        
+
+        <div class="d-flex w-100 h-100">
+            <div class="w-100 h-100 overflow-hidden text-center align-middle align-self-center row overflow-hidden ">
+                <div class="col-player h-100 col text-left float-left">
+                    <div class="text-white text-truncate h-100" v-show="CurrentSong.enabled">
+                    <img  class="thumbnail float-left" v-bind:src="CurrentSong.thumbnail"/>
+                    <div class=" text-truncate song-title ">{{CurrentSong.title}} </div>
+                    <div class="text-truncate song-author" >{{CurrentSong.autor}} </div>
+                    <div class="text-truncate song-album">{{CurrentSong.album}} </div>
+                </div>
+                </div>
+
+                <div class="col-controls h-100 float-left">
+                    <div class="d-flex w-100 h-100">
+                        <div class="w-100 text-center align-self-center overflow-hidden">
+                            <!--controles de volumen-->
+                            <section class="d-inline-block">
+                                <span class="d-inline-block volume-control">
+                                    <i class="material-icons">volume_down</i>
+                                </span>
+                                <div id="volume"></div>
+                                <span class="d-inline-block volume-control">
+                                    <i class="material-icons">volume_up</i>
+                                </span>
+                            </section>
+
+                            <!--controles de shuffle y previous-->
+                            <section class="d-inline-block">
+                                <span class="d-inline-block volume-control">
+                                    <i class="material-icons">shuffle</i>
+                                </span>
+
+                                <span class="d-inline-block volume-control">
+                                    <i class="material-icons">skip_previous</i>
+                                </span>
+
+                            </section>
+
+                            <!--controles de play/pause-->
+                            <section class="d-inline-block">
+                                <span class="d-inline-block volume-control "><i
+                                        class="material-icons playButton" onclick="AudioPlayer.play(this);">play_arrow</i>
+                                </span>
+                            </section>
+
+                            <!--controles de next y replay-->
+                            <section class="d-inline-block">
+                                <span class="d-inline-block volume-control"><i class="material-icons">skip_next</i>
+                                </span>
+
+                                <span class="d-inline-block volume-control"><i class="material-icons">replay</i>
+                                </span>
+                            </section>
+                            
+                        </div>
+                    </div>
+
+
+                    <div class="col-player h-100 float-left">
+                    </div>
+
+                </div>
+
+            </div>
+
+    </footer>
+
+
+    </div>
+</body>
+
+</html>
