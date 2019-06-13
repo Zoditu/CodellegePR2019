@@ -1,0 +1,83 @@
+#content{
+    height: calc(100% - 7rem);
+
+}
+
+#player{
+    height: 6rem;
+    background: rgba(0, 0, 0, 0.7);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    border-radius: .5rem;
+
+}
+
+.col-player{
+ width: 20rem;
+}
+
+.col-controls{
+width: calc(100% - 40rem);
+}
+.volume-control{
+    color: whitesmoke;
+    cursor: pointer;
+
+}
+
+.media-hyperlink{
+    cursor: pointer;
+    color: whitesmoke;
+    transition: color 0.3s;
+}
+
+.media-hyperlink:hover{
+    color: #28A745;
+    transition: color 0.3s;
+}
+
+.progressBar{
+position: absolute;
+background: whitesmoke;
+top: -0.5rem;
+width: 100%;
+}
+
+#volume{
+    display: inline-block;
+    width: 10rem;
+    height: 0.5rem;
+    margin-right: 0.rem;
+
+}
+
+#volume > div {
+    background:   rgb(79, 175, 212);
+}
+
+#volume span {
+    border-radius: 99rem;
+    background: rgb(37, 121, 155);
+    top: -0.4rem;
+}
+
+#play-button{
+    font-size: 3rem;
+}
+
+#music_time
+{
+    width: calc(100vw - 0.6em);
+    height: 0.5rem;
+    cursor: pointer;
+}
+#music_time > div {
+    background:  rgb(79, 175, 212);
+}
+
+#music_time span {
+    border-radius: 99rem;
+    background: rgb(37, 121, 155);
+    top: -0.4rem;
+}

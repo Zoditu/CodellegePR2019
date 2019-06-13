@@ -1,0 +1,271 @@
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(MaterialDesign/MaterialIcons-Regular.eot);
+    /* For IE6-8 */
+    src: local('Material Icons'),
+        local('MaterialIcons-Regular'),
+        url(MaterialDesign/MaterialIcons-Regular.woff2) format('woff2'),
+        url(MaterialDesign/MaterialIcons-Regular.woff) format('woff'),
+        url(MaterialDesign/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    zoom: 0.9;
+}
+
+header {
+    height: 58px;
+    background: #343A40;
+}
+
+.bottom-white-border {
+    border-bottom: 0.1rem solid whitesmoke;
+}
+
+.no-border {
+    border: 0 !important;
+}
+
+
+main {
+    padding-top: 58px;
+    height: calc(100% - 6rem);
+}
+
+footer {
+    height: 6rem;
+    background: #343A40;
+    position: relative;
+}
+
+.home-component {}
+
+.color-white {
+    color: whitesmoke;
+}
+
+.border-color-white {
+    background: whitesmoke;
+}
+
+.color-green {
+    color: #28A745;
+}
+
+.color-green:focus {
+    box-shadow: unset;
+}
+
+.color-green:hover {
+    color: whitesmoke;
+}
+
+.thumbnail {
+    background-color: gray;
+    width: 5rem;
+    height: calc(100% - 1rem);
+    margin: 0.5rem;
+}
+
+.song-title {
+    margin-top: 1rem;
+    padding: 0.25;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.song-author {
+    font-size: 0.75rem;
+    padding: 0.25;
+}
+
+.song-album {
+    font-size: 0.75rem;
+    padding: 0.25;
+}
+
+.auto-scroll {
+    overflow: hidden;
+}
+
+.auto-scroll:hover {
+    overflow: auto;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: aquamarine;
+    border-color: aquamarine;
+}
+
+.FXmasonry {
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+
+    column-gap: 1rem;
+}
+
+.FXmasonry-item {
+    float: left;
+    width: 100%;
+    margin:0;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid-column;
+    display: table;
+
+    margin-bottom: 1rem;
+    background: #D26;
+    border: 2px solid #333;
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
+}
+
+@media only screen and (max-width: 1280px){
+    .FXmasonry{
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media only screen and (max-width: 1280px){
+    .container{
+        max-width: 1440px;
+    }
+}
+
+.h1 { height: 100px; }
+.h2 { height: 200px; }
+.h3 { height: 300px; }
+.h4 { height: 400px; }
+.h5 { height: 500px; }
+.h6 { height: 600px; }
+
+
+
+
+
+
+#banner div,
+#banner img {
+    height: 100%;
+    width: 100%
+}
+
+#banner {
+    height: 20vw;
+
+}
+
+#user-music {
+    background: #343A40;
+    width: 20rem;
+    height: 100%;
+    border-right: 0.1rem solid whitesmoke;
+    overflow: auto;
+    color: whitesmoke;
+}
+
+#main {
+    background: rgb(168, 153, 153);
+    width: calc(100% - 40rem);
+    overflow: auto;
+
+}
+
+#related {
+    padding-top: 1rem;
+    background: #343A40;
+    width: 20rem;
+    height: 100%;
+    border-left: 0.1rem solid whitesmoke;
+    overflow: auto;
+}
+
+#load-background {
+    position: absolute;
+    z-index: 999999;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+
+}
+
+.loader {
+    position: absolute;
+    top: calc(50vh - 6rem);
+    width: 100vw;
+    height: 6rem;
+    display: block;
+    background: rgba(255, 255, 255, 0.5)
+}
+
+.loader *:first-child {
+    margin: auto;
+    height: 6rem;
+    width: 6rem;
+}
+
+.related-item {
+    height: 80px;
+    margin: 1rem;
+    margin-top: 0;
+    background: rgb(58, 64, 68);
+
+}
+
+.musicList {
+    list-style-type: none;
+    overflow: hidden;
+    padding-right: 1rem;
+}
+
+.musicList li {
+    white-space: nowrap;
+}
+
+.bg-light-gray {
+    background: rgb(58, 64, 68);
+}
+
+.material-icons {
+
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+
+    vertical-align: middle !important;
+    padding-bottom: 3px;
+    padding-right: 0.2em;
+
+
+}

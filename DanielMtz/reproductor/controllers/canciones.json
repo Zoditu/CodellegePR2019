@@ -1,0 +1,60 @@
+[
+    {
+        "title" :"Loco (Tu forma de ser)", 
+        "album":"El Milagro Argentino",
+        "author":"Los Autenticos Decadentes",
+        "year":1989,
+        "artista": "Los Autenticos Decadentes",
+        "thumbnail":"default.png",
+        "duration":"202",
+        "colaborators":"N/A",
+        "location":"http://coolbeanz.ml/reproductor/music/Loco%20(Tu%20Forma%20De%20Ser)%20(Remasterized%202001).mp3"
+    },
+    { 
+        "title" :"Como Quisiera Olvidarte", 
+        "album":"La Chusma Inconsiente",
+        "author":"Evelyn Cornejo",
+        "year": 2017,
+        "artista": "Evelyn Cornejo",
+        "thumbnail":"default.jpg",
+        "duration":"202",
+        "colaborators":"N/A",
+        "location":"http://coolbeanz.ml/reproductor/music/Como%20Quisiera%20Olvidarte%20-%20Evelyn%20Cornejo.mp3"
+    },
+    {
+        "title" :"Blank Space", 
+        "album":"1989",
+        "author":"Taylor Swift",
+        "year":2014,
+        "artista": "Taylor Swift",
+        "thumbnail":"default.jpg",
+        "duration":"235",
+        "colaborators":"N/A",
+        "location":"http://coolbeanz.ml/reproductor/music/Blank%20Space.mp3"
+    },
+    {
+        "title" :"This is America", 
+        "album":"N/A",
+        "author":"Donald Glover",
+        "year":"2018",
+        "artista": "Childish Gambino",
+        "thumbnail":"default.jpg",
+        "duration":"240",
+        "colaborators":"N/A",
+        "location":"http://coolbeanz.ml/reproductor/music/Childish%20Gambino%20-%20This%20Is%20America%20(Official%20Audio).mp3"
+    },  
+    {
+        "title" :"Another Brick in the Wall", 
+        "album":"The Wall",
+        "author":"Pink Floyd",
+        "year":"1979",
+        "artista": "Pink Floyd",
+        "thumbnail":"default.jpg",
+        "duration":"240",
+        "colaborators":"N/A",
+        "location":"http://coolbeanz.ml/reproductor/music/Another%20Brick%20in%20the%20Wall.mp3"
+    }
+
+
+
+]
