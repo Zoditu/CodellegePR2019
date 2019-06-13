@@ -1,0 +1,47 @@
+.playlist-title
+{
+    border-bottom: 0.1rem solid white;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+}
+.playlist-thumbnail
+{
+    background: gray;
+    height: 7rem;
+    width: 7rem;
+    margin: 0.5rem;
+    margin-left: 1.5rem;
+    border-radius: 15px;
+    border: 3px solid whitesmoke;
+}
+.break-word
+{
+    white-space: normal;
+}
+.playlist-name
+{
+    font-size: 1.5rem;
+}
+.playlist-description
+{
+    font-size: 1rem;
+}
+.playlist-owner
+{
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 9rem;;
+}
+.pointer
+{
+    cursor: pointer;
+}
+.list-song
+{
+    height: 2rem;
+}
+.list-song:hover
+{
+    background: aqua;
+}
